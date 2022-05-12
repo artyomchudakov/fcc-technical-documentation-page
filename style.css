@@ -118,10 +118,7 @@ pre {
   margin: 10px auto;
   overflow: auto;
 }
-pre code {
-  white-space: inherit;
-  padding: 0;
-}
+
 .hl-number,
 .hl-literal,
 .hl-string {
@@ -132,6 +129,12 @@ pre code {
 }
 .hl-attr {
   color: #c4ca60;
+}
+.hl-doc {
+  padding-left: 56px;
+}
+#Text_Editing pre {
+  padding-left: 0;
 }
 
 @media screen and (max-width: 700px) {
