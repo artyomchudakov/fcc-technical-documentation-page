@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <title>fcc: Technical Documentation Page</title>
+</head>
+
+<body>
+  <nav id="navbar">
+    <div>
+      <div class="links-container">
+        <header class="title">How i used PDFkit</header>
+        <ul class="links">
+          <li><a href='#Introduction' class="nav-link">Introduction</a></li>
+          <li><a href='#Create_Document' class="nav-link">Create Document</a></li>
+          <li><a href='#Text_Editing' class="nav-link">Text Editing</a></li>
+          <li><a href='#Creating_Table' class="nav-link">Creating Table</a></li>
+          <li><a href='#Creating_Footer' class="nav-link">Creating Footer</a></li>
+          <li><a href='#Reference' class="nav-link">Reference</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <main id="main-doc">
+    <section class="main-section" id="Introduction">
+      <header>Introduction</header>
+      <div>
+        <p>In one of the projects I needed to use pdfkit. Despite the existing
+          documentation for this
+          npm package, many aspects of what I needed to do were not covered in the
+          documentation.</p>
+        <p>I spent a lot of time looking for applications/examples of usage, something was
+          found
+          something was figured out on my own through trials and errors, something had to
+          be given
+          up.</p>
+        <p>In this documentation, I will use small examples to share with you my
+          experience and the
+          solutions that I found. If this information was useful to you, I would be
+          grateful if you
+          put a star on this repository on <a
+            href='https://github.com/artyomchudakov?tab=repositories' target="_blank">
+            GitHub</a>.</p>
+
+        <p id="notice">
+          Notice, that this is not a tutorial on how to use this package, but only a
+          small hint in solving some problems that you may have to face.</p>
+      </div>
+    </section>
+
+    <section class="main-section" id="Create_Document">
+      <header>Create Document</header>
+      <div>
+        <p>The library provides a large number of predefined sizes that you can use. <a
+            href="http://pdfkit.org/docs/paper_sizes.html" target="_blank"
+            rel="noopener noreferrer">Here</a> you can find them</p>
+        <pre><code>let doc = new PDFDocument({
+        <span class="hl-attr">    size:</span> <span class="hl-string">'A4'</span>,
+        <span class="hl-attr">    margins:</span> {
+        <span class="hl-attr">      left:</span> <span class="hl-number">50</span>,
+        <span class="hl-attr">      right:</span> <span class="hl-number">50</span>,
+        <span class="hl-attr">      top:</span> <span class="hl-number">50</span>,
+        <span class="hl-attr">      bottom:</span> <span class="hl-number">20</span>,
+            },
+        <span class="hl-attr">    bufferPages:</span> <span class="hl-literal">true</span>,
+          });
+        </code></pre>
+      </div>
+    </section>
+    <section class="main-section" id="Text_Editing">
+      <header>Text Editing</header>
+      <div>
+        <p>Available Fonts : 'Courier', 'Helvetica',
+          'Symbol',
+          'Times-Roman',
+          'ZapfDingbats' and more.</p>
+        <p>Library methods can be called one after the other, which has its pros and cons
+        </p>
+        <pre><code><span class="hl-doc">doc</span>
+          <span class="hl-method">.font</span>(<span class="hl-string">'Helvetica'</span>)
+          <span class="hl-method">.fontSize</span>(<span class="hl-number">8</span>)
+          <span class="hl-method">.lineGap</span>(<span class="hl-number">3</span>)
+          <span class="hl-method">.text</span>(
+            <span class="hl-string">'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Odio
+              dignissimos similique adipisci? Ratione voluptates nemo odit possimus aspernatur vitae
+              officiis.'</span>,
+            posX,
+            posY,
+            {
+              <span class="hl-attr">width</span>: <span class="hl-number">500</span>,
+              <span class="hl-attr">align</span>: <span class="hl-string">'left'</span>,
+              <span class="hl-attr">underline</span>: true,
+            }
+          );
+        </code></pre>
+      </div>
+    </section>
+
+    <section class="main-section" id="Creating_Table">
+      <header>Creating Table</header>
+      <div>
+        <p>To create a table, I had to work the most. I created a helper function with
+          which I could
+          already create table headers and fill it dynamically.</p>
+        <pre><code>function <span class="hl-method">generateTableRow</span>(doc, tableStartPosY, col1, col2, col3, col4, col5) {
+          const width = { 
+            col1: <span class="hl-number">80</span>,
+            col2: <span class="hl-number">130</span>,
+            col3: <span class="hl-number">110</span>,
+            col4: <span class="hl-number">70</span>,
+            col5: <span class="hl-number">70</span>,
+          };
+          const docMarginLeft = <span class="hl-number">50</span>;
+          const tableGap = <span class="hl-number">10</span>;
+        
+          const col1_x = marginLeft;
+          const col2_x = tableGap + col1_x + width.col1;
+          const col3_x = tableGap + col2_x + width.col2;
+          const col4_x = tableGap + col3_x + width.col3;
+          const col5_x = tableGap + col4_x + width.col4;
+        
+          doc
+            .<span class="hl-method">fontSize</span>(<span class="hl-number">8</span>)
+            .<span class="hl-method">fill</span>(<span class="hl-string">'#444444'</span>)
+            .<span class="hl-method">text</span>(col1, col1_x, tableStartPosY, { <span class="hl-attr">width</span>: width.col1, <span class="hl-attr">align: </span><span class="hl-string">'left'</span> })
+            .<span class="hl-method">text</span>(col2, col2_x, tableStartPosY, { <span class="hl-attr">width</span>: width.col2, <span class="hl-attr">align: </span><span class="hl-string">'left'</span> })
+            .<span class="hl-method">text</span>(col3, col3_x, tableStartPosY, { <span class="hl-attr">width</span>: width.col3, <span class="hl-attr">align: </span><span class="hl-string">'right'</span> })
+            .<span class="hl-method">text</span>(col4, col4_x, tableStartPosY, { <span class="hl-attr">width</span>: width.col4, <span class="hl-attr">align: </span><span class="hl-string">'right'</span> })
+            .<span class="hl-method">text</span>(col5, col5_x, tableStartPosY, { <span class="hl-attr">width</span>: width.col5, <span class="hl-attr">align: </span><span class="hl-string">'right'</span> });
+        }
+        </code></pre>
+        <p>Then called the function passing arguments to it</p>
+        <pre><code><span class="hl-method">generateTableRow</span>(
+          doc,
+          <span class="hl-number">300</span>,
+          item.invoiceDate,
+          item.invoiceNr,
+          item.tax,
+          item.shippingCosts,
+          item.packagingСosts
+        );
+        </code></pre>
+      </div>
+    </section>
+
+    <section class="main-section" id="Creating_Footer">
+      <header>Creating Footer</header>
+      <p>For the footer I used</p>
+      <ul>
+        <li>full-width pdf image excluding margins</li>
+        <li>footer data was in the form of a single-level array</li>
+        <li>split the data into 5 columns in which I used the slice method for my array in
+          order to
+          display the necessary data in each unordered list</li>
+        <li>to remove the standard dots/bullets in the lists used the property
+          borderRadius : 0.01 </li>
+      </ul>
+
+      <pre><code>function <span class="hl-method">addPageFooter</span>(doc, footerText) {
+        doc<span class="hl-method">.image</span>(<span class="hl-string">'./service/static/footer.png'</span>, <span class="hl-number">50</span>, <span class="hl-number">700</span>, { <span class="hl-attr">width</span>: <span class="hl-number">500</span> });
+        doc
+          <span class="hl-method">.fontSize</span>(<span class="hl-number">6</span>)
+          <span class="hl-method">.fill</span>(<span class="hl-string">'#444444'</span>)
+          <span class="hl-method">.lineGap</span>(<span class="hl-number">5</span>)
+          <span class="hl-method">.list</span>(footerText.slice(<span class="hl-number">0</span>, <span class="hl-number">3</span>), <span class="hl-number">50</span>, <span class="hl-number">770</span>, {
+            <span class="hl-attr">width</span>: <span class="hl-number">100</span>,
+            <span class="hl-attr">align</span>: <span class="hl-string">'left'</span>,
+            <span class="hl-attr">listType</span>: <span class="hl-string">'bullet'</span>,
+            <span class="hl-attr">bulletRadius</span>: <span class="hl-number">0.01</span>, <span class="hl-comment">// to hide lists dots/bullets</span>
+          })
+          <span class="hl-method">.list</span>(footerText.slice(<span class="hl-number">3</span>, <span class="hl-number">5</span>), <span class="hl-number">160</span>, <span class="hl-number">770</span>, {
+            <span class="hl-attr">width</span>: <span class="hl-number">60</span>,
+            <span class="hl-attr">align</span>: <span class="hl-string">'left'</span>,
+            <span class="hl-attr">listType</span>: <span class="hl-string">'bullet'</span>,
+            <span class="hl-attr">bulletRadius</span>: <span class="hl-number">0.01</span>,
+          })
+          <span class="hl-method">.list</span>(footerText.slice(<span class="hl-number">5</span>, <span class="hl-number">7</span>), <span class="hl-number">230</span>, <span class="hl-number">770</span>, {
+            <span class="hl-attr">width</span>: <span class="hl-number">130</span>,
+            <span class="hl-attr">align</span>: <span class="hl-string">'left'</span>,
+            <span class="hl-attr">listType</span>: <span class="hl-string">'bullet'</span>,
+            <span class="hl-attr">bulletRadius</span>: <span class="hl-number">0.01</span>,
+          })
+          <span class="hl-method">.list</span>(footerText.slice(<span class="hl-number">7</span>, <span class="hl-number">10</span>), <span class="hl-number">370</span>, <span class="hl-number">770</span>, {
+            <span class="hl-attr">width</span>: <span class="hl-number">90</span>,
+            <span class="hl-attr">align</span>: <span class="hl-string">'left'</span>,
+            <span class="hl-attr">listType</span>: <span class="hl-string">'bullet'</span>,
+            <span class="hl-attr">bulletRadius</span>: <span class="hl-number">0.01</span>,
+          })
+          <span class="hl-method">.list</span>(footerText.slice(<span class="hl-number">10</span>), <span class="hl-number">470</span>, <span class="hl-number">770</span>, {
+            <span class="hl-attr">width</span>: <span class="hl-number">80</span>,
+            <span class="hl-attr">align</span>: <span class="hl-string">'left'</span>,
+            <span class="hl-attr">listType</span>: <span class="hl-string">'bullet'</span>,
+            <span class="hl-attr">bulletRadius</span>: <span class="hl-number">0.01</span>,
+          });
+      }
+      </code></pre>
+    </section>
+
+    <section class="main-section" id="Reference">
+      <header>Reference</header>
+      <p>These links were very helpful throughout the project.</p>
+      <div>
+        <ul class="reference-links">
+          <li>
+            <a href="http://pdfkit.org/" target="_blank">PDFKit oficial Documentation</a>
+          </li>
+          <li>
+            <a href="https://npmdoc.github.io/node-npmdoc-pdfkit/build/apidoc.html"
+              target="_blank">API Documentation for PDFKit (v0.8.0)</a>
+          </li>
+          <li>
+            <a href='https://github.com/PSPDFKit-labs/pdfkit-invoice' target="_blank">
+              PDFKit Invoices</a>
+          </li>
+          <li>
+            <a href='https://github.com/yuchiu/Default-Material-Dark-Theme/blob/master/themes/dark_vs.json'
+              target="_blank">VSCode Default Material Dark Theme Colors</a>
+          </li>
+          <li>
+            <a href='https://tableconvert.com/excel-to-json' target="_blank"> Convert
+              Excel
+              to JSON Array</a>
+          </li>
+        </ul>
+      </div>
+    </section>
+    <div class="description">
+      <p>freeCodeCamp - Responsive Web Design Projects - Build a Technical Documentation
+        Page</p>
+    </div>
+  </main>
+  <script src="https://cdn.freecodecamp.org/testable-projects-fcc/v1/bundle.js"></script>
+</body>
+
+</html>
