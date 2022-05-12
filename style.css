@@ -1,0 +1,152 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --color-link: #41658a;
+  --color-hover: #9cdcfe;
+  --color-font: #636363;
+  --transition: all 0.3s linear;
+  --sidebar-width: 300px;
+}
+body {
+  max-width: 1200px;
+  box-shadow: 0.1px 0 0 0.1px#636363;
+  margin: 0 auto;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  color: var(--color-font);
+}
+ul {
+  list-style-type: none;
+}
+.title {
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 20px;
+  padding: 0 16px 16px;
+}
+a {
+  text-decoration: none;
+  color: var(--color-link);
+}
+a:hover {
+  color: var(--color-hover);
+  transition: all 0.3s linear;
+}
+
+#navbar {
+  margin: 0;
+  padding: 20px 30px;
+  width: var(--sidebar-width);
+  background-color: #eee;
+  position: fixed;
+  height: 100%;
+  overflow: auto;
+}
+
+#navbar a {
+  display: block;
+  color: var(--color-font);
+  padding: 16px;
+  text-decoration: none;
+}
+#Creating_Footer li {
+  list-style-type: square;
+  padding: 10px 0;
+}
+#Creating_Footer ul {
+  padding: 0 30px;
+}
+
+.reference-links {
+  list-style-type: upper-roman;
+  color: var(--color-link);
+  padding-left: 30px;
+}
+.reference-links a {
+  display: block;
+  padding: 10px;
+  color: var(--color-link);
+  text-decoration: none;
+}
+.reference-links a:hover {
+  color: var(--color-hover);
+}
+
+#navbar a:hover:not(.active) {
+  background-color: #555;
+  color: white;
+  transition: all 0.3s linear;
+}
+
+main {
+  margin-left: var(--sidebar-width);
+  padding: 20px 40px;
+}
+
+.main-section p {
+  padding: 10px 0;
+  line-height: 24px;
+}
+#notice {
+  font-style: italic;
+  color: var(--color-link);
+}
+.main-section > header {
+  font-size: 24px;
+  font-weight: bold;
+  padding: 15px 0;
+}
+#Introduction > header {
+  padding-top: 0;
+}
+
+.description {
+  text-align: center;
+  padding-top: 70px;
+  font-size: 70%;
+}
+pre {
+  background-color: #1b1b1b;
+  color: var(--color-hover);
+  border: transparent;
+  border-radius: 5px;
+  display: block;
+  padding: 20px 20px 0 20px;
+  margin: 10px auto;
+  overflow: auto;
+}
+pre code {
+  white-space: inherit;
+  padding: 0;
+}
+.hl-number,
+.hl-literal,
+.hl-string {
+  color: #d4d4d4;
+}
+.hl-method {
+  color: #d7ba7d;
+}
+.hl-attr {
+  color: #c4ca60;
+}
+
+@media screen and (max-width: 700px) {
+  #navbar {
+    width: 100%;
+    height: auto;
+    position: relative;
+    text-align: center;
+  }
+  #navbar ul {
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+  }
+  main {
+    margin-left: 0;
+  }
+}
